@@ -67,6 +67,45 @@ Do this by default, even for functions with only 2-3 args. If the function is re
 
 Use `Schema` from Effect for shared validation and type derivation.
 
+## Writing Effects
+
+Use `Effect.gen` or `Effect.fn` when composing Effects. Prefer them over deeply nested `pipe(..., Effect.flatMap(...))` chains when the logic has multiple dependent steps.
+
+Keep the effect body focused on the happy path. Add control logic like retries, error mapping/catching, timeouts, and instrumentation by piping the resulting Effect, or by using the second argument to `Effect.fn`.
+
+Example files should not execute Effects at module load time. Keep `program` as an Effect value, and export a small `run` function to define a sane execution boundary while keeping the run path type-checked.
+
+Follow the real example in [`examples/effect-gen-fn.ts`](examples/effect-gen-fn.ts).
+
+```ts
+const loadUserProfile = Effect.fn("loadUserProfile")(
+  function* (input: { userId: UserId }) {
+    const user = yield* getUser({ id: input.userId });
+    const profile = yield* getProfile({ userId: user.id });
+
+    return { user, profile };
+  },
+  (effect) =>
+    effect.pipe(
+      Effect.retry({ times: 2 }),
+      Effect.mapError((cause) => new UserProfileLoadFailed({ cause })),
+    ),
+);
+```
+
+For local composition, use `Effect.gen` and pipe control logic around the composed program:
+
+```ts
+const program = Effect.gen(function* () {
+  const user = yield* getUser({ id });
+  const profile = yield* getProfile({ userId: user.id });
+
+  return { user, profile };
+}).pipe(Effect.withSpan("loadUserProfile"));
+
+export const run = () => Effect.runSync(program);
+```
+
 ## Tests as real as possible
 
 Write tests with `@effect/vitest`.

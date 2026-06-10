@@ -38,7 +38,7 @@ const program = Effect.gen(function* () {
   return yield* getUser({ id: userId });
 });
 
-Effect.runSync(program);
+export const run = () => Effect.runSync(program);
 
 // @ts-expect-error Validate and brand the string before sending.
 sendSMS({ to: "+15551234567", body: "This should not compile" });
