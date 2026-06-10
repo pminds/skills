@@ -5,13 +5,13 @@ Minimal agent skills repository for Productminds.
 ## Install
 
 ```bash
-npx skills add productminds/skills
+npx skills add pminds/skills
 ```
 
 Or install the single skill directly:
 
 ```bash
-npx skills add productminds/skills --skill quality-code
+npx skills add pminds/skills --skill quality-code
 ```
 
 ## Skills
