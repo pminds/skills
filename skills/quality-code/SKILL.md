@@ -85,9 +85,15 @@ const loadUserProfile = Effect.fn("loadUserProfile")(
 
     return { user, profile };
   },
-  (effect) =>
+  (effect, input) =>
     effect.pipe(
+      Effect.tap(() =>
+        Effect.logInfo(`Loading profile for user ${input.userId}`),
+      ),
       Effect.retry({ times: 2 }),
+      Effect.tap(() =>
+        Effect.logInfo(`Finished loading profile for user ${input.userId}`),
+      ),
       Effect.mapError((cause) => new UserProfileLoadFailed({ cause })),
     ),
 );
