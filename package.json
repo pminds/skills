@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "packageManager": "pnpm@10.12.1",
+  "type": "module",
+  "scripts": {
+    "check:examples": "tsc -p tsconfig.examples.json"
+  },
+  "devDependencies": {
+    "effect": "^3.21.3",
+    "typescript": "^5.9.3"
+  }
+}
