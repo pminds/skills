@@ -8,10 +8,11 @@ Minimal agent skills repository for Productminds.
 npx skills add pminds/skills
 ```
 
-Or install the single skill directly:
+Or install a single skill directly:
 
 ```bash
 npx skills add pminds/skills --skill quality-code
+npx skills add pminds/skills --skill effect-graphql-runtime
 ```
 
 ## Skills
