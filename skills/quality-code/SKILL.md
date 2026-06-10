@@ -1,6 +1,6 @@
 ---
 name: quality-code
-description: Use when writing or reviewing TypeScript/full-stack code. Encodes principles for type safety (branded types, discriminated unions, end-to-end types), real tests over mocks, OpenTelemetry observability, and picking the right abstractions instead of premature ones.
+description: Use this skill whenever writing, refactoring, or reviewing TypeScript/full-stack code, especially Effect-based code, API/server/client boundaries, tests, domain modeling, validation, or observability. It pushes for impossible states, branded types, discriminated unions, derived end-to-end types, real integration tests over mocks, OpenTelemetry spans, and abstractions that match the problem instead of premature indirection.
 ---
 
 # Writing quality full-stack TypeScript
@@ -15,11 +15,11 @@ Use the type system to make invalid states fail at compile time. Fewer reachable
 
 Brand primitives so they can't be mixed up. Validate once at the boundary; downstream code trusts the type.
 
-Use Effect's `Schema.brand` instead of rolling your own branded-type helper. Follow the real example in [`examples/effect-branded-types.ts`](examples/effect-branded-types.ts).
+Use Effect's `Schema.brand` instead of rolling your own branded-type helper. Follow the real example in [`references/effect-branded-types.ts`](references/effect-branded-types.ts).
 
 ### Discriminated unions over flag bags
 
-When one field controls which other fields are valid, model that as a union. Don't use nullable fields that allow contradictory states. For a real Effect Schema example where `completed` statements must have a verdict and verdict reason, see [`examples/effect-discriminated-unions.ts`](examples/effect-discriminated-unions.ts).
+When one field controls which other fields are valid, model that as a union. Don't use nullable fields that allow contradictory states. For a real Effect Schema example where `completed` statements must have a verdict and verdict reason, see [`references/effect-discriminated-unions.ts`](references/effect-discriminated-unions.ts).
 
 ```ts
 // Don't - invalid combos representable
@@ -67,6 +67,8 @@ Do this by default, even for functions with only 2-3 args. If the function is re
 
 Use `Schema` from Effect for shared validation and type derivation.
 
+Validate at boundaries: HTTP input, env/config, database edges, queue messages, and third-party responses. Keep parsed/branded values inside the system so downstream code does not repeatedly defend against invalid primitives.
+
 ## Writing Effects
 
 Use `Effect.gen` or `Effect.fn` when composing Effects. Prefer them over deeply nested `pipe(..., Effect.flatMap(...))` chains when the logic has multiple dependent steps.
@@ -75,7 +77,7 @@ Keep the effect body focused on the happy path. Add control logic like retries, 
 
 Example files should not execute Effects at module load time. Keep `program` as an Effect value, and export a small `run` function to define a sane execution boundary while keeping the run path type-checked.
 
-Follow the real example in [`examples/effect-gen-fn.ts`](examples/effect-gen-fn.ts).
+Follow the real example in [`references/effect-gen-fn.ts`](references/effect-gen-fn.ts).
 
 ```ts
 const loadUserProfile = Effect.fn("loadUserProfile")(
@@ -127,3 +129,5 @@ Mock only third-party services that have no test environment.
 ## OpenTelemetry, not print logging
 
 When adding observability, instrument with OTel spans. The setup cost pays back the first time a user sends a request ID and you can answer instead of guess.
+
+Prefer spans around meaningful operations and boundaries, not noisy line-by-line logs. Attach stable attributes that help debug production behavior: user or tenant IDs when safe, operation names, external service names, and relevant IDs.
