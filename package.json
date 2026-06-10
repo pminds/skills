@@ -3,7 +3,7 @@
   "packageManager": "pnpm@10.12.1",
   "type": "module",
   "scripts": {
-    "check:examples": "tsc -p tsconfig.examples.json"
+    "check:references": "tsc -p tsconfig.references.json"
   },
   "devDependencies": {
     "effect": "^3.21.3",

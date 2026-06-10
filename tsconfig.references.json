@@ -6,5 +6,5 @@
     "module": "ESNext",
     "moduleResolution": "bundler"
   },
-  "include": ["skills/*/examples/**/*.ts"]
+  "include": ["skills/*/references/**/*.ts"]
 }
