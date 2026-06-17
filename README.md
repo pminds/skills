@@ -12,10 +12,10 @@ Or install a single skill directly:
 
 ```bash
 npx skills add pminds/skills --skill quality-code
-npx skills add pminds/skills --skill effect-graphql-runtime
+npx skills add pminds/skills --skill effect
 ```
 
 ## Skills
 
-- **[effect-graphql-runtime](skills/effect-graphql-runtime/SKILL.md)** - pattern for setting up an Effect `ManagedRuntime` and using it from GraphQL resolvers.
+- **[effect](skills/effect/SKILL.md)** - umbrella skill for Effect-TS patterns: error handling with `Data.TaggedError` / `Schema.TaggedError`, services, runtimes, and GraphQL integration.
 - **[quality-code](skills/quality-code/SKILL.md)** - principles for writing quality full-stack TypeScript: branded types, discriminated unions, end-to-end types, real tests over mocks, OpenTelemetry, and picking the right abstractions.

@@ -1,8 +1,3 @@
----
-name: effect-graphql-runtime
-description: Use this skill whenever wiring Effect into GraphQL, Pothos resolvers, GraphQL context, Effect services, ManagedRuntime, Layer composition, runtime.runPromise, or resolver adapters. It shows how to create one application runtime from the Layer graph, put a small runtime facade on GraphQL context, and keep resolvers thin while preserving config, logging, and OpenTelemetry conventions.
----
-
 # Effect Runtimes With GraphQL
 
 Use one application `ManagedRuntime` for GraphQL, built from the same Effect `Layer` graph as the rest of the app. Put the runtime on the GraphQL context, then keep Pothos resolvers as thin adapters that call `runtime.runPromise(...)`.
