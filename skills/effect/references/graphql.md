@@ -35,7 +35,12 @@ const runtime = ManagedRuntime.make(AppLayer);
 
 export type GraphQLContextRuntime = Pick<
   typeof runtime,
-  "runSync" | "runPromise" | "runPromiseExit" | "runFork" | "runCallback" | "dispose"
+  | "runSync"
+  | "runPromise"
+  | "runPromiseExit"
+  | "runFork"
+  | "runCallback"
+  | "dispose"
 >;
 
 export const GraphQLContextRuntime: GraphQLContextRuntime = {
@@ -75,14 +80,14 @@ builder.queryField("user", (t) =>
     args: {
       id: t.arg.string({ required: true }),
     },
-    resolve: (_parent, { id }, { runtime }) =>
-      runtime.runPromise(
-        Effect.gen(function* () {
-          const client = yield* UserClient;
+    resolve: (_parent, { id }, { runtime }) => {
+      const program = Effect.fn('Query.user')(function* {
+          const client = yield* UserClient
+          return yield* client.getUser({ id })
+      })
 
-          return yield* client.getUser({ id });
-        }),
-      ),
+      return runtime.runPromise(program)
+    }
   }),
 );
 ```
